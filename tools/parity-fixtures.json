@@ -1,0 +1,141 @@
+[
+  {
+    "name": "mc-tabbed-paste",
+    "kind": "mc",
+    "data": {
+      "caseNumber": "  663/2026  ",
+      "bothPetitioners": true,
+      "petitioners": "\t\t\t1. Navitha V \r\n\t\t\tDaughter of Venkatappa\u00a0\r\n\t\t\tAged about 33 years \r\n\r\n\t\t2. Raghavendra\r\n\t\tSon of Late Krishnamurthy L E\t\r\n\t\tBengaluru-560066   ",
+      "suitFiledOn": "2026-07-03",
+      "natureOfPetition": "divorce-act",
+      "petitionClaim": "   The Petitioners pray that this Hon'ble Court may be pleased to pass a decree of divorce & dissolve the marriage <solemnized> on 24-08-2017.\r\n\r\n\tii) Grant costs of this Petition;\u00a0\r\n",
+      "petitionerAdvocate": "\tSri. Basava Prasad Kunale  ",
+      "orderText": "\tThe petition filed by the petitioners Under Section 13B is hereby allowed.\r\n\r\n\tNo order as to cost.  ",
+      "decreeDate": "2026-08-31"
+    }
+  },
+  {
+    "name": "mc-two-advocates",
+    "kind": "mc",
+    "data": {
+      "caseNumber": "M.C.NO.869/2025",
+      "bothPetitioners": false,
+      "petitioners": "Mrs.SHOBHA.S,\nW/o. Srinivas, R",
+      "respondents": "\u00a0Mr.SRINIVAS, R\n\tS/o. Reddappa Chari",
+      "suitFiledOn": "2025-10-30",
+      "natureOfPetition": "custom",
+      "natureCustom": "  Under section 13(1) (i-a)   of Hindu\tMarriage Act  ",
+      "petitionClaim": "The Petitioner prays for a JUDGEMENT AND DECREE against the Respondent as follows:-\n\ni) Pass a Decree of divorce.\n\nii) Grant alimony of Rs. 30,00,000.",
+      "petitionerAdvocate": "Sri Shivaraju D K",
+      "respondentAdvocate": "Lavanya K",
+      "orderText": "The petition is hereby allowed.\nNo order as to cost.",
+      "decreeDate": "2026-08-25"
+    }
+  },
+  {
+    "name": "os-tabbed-defendants",
+    "kind": "os",
+    "data": {
+      "caseNumber": "160/2012",
+      "plaintiff": "Smt. J. SARASWATHI\r\n\t\t\t\tW/o Late M.S.Jagannathan, \r\n\t\t\t\tAged about 61 years, ",
+      "defendants": "1. Sri. DEVID\r\n\t\t\t\t\tS/o Arogyaswamy, \r\n\t\t\t\t\tSince dead by his Lrs\r\n\r\n\t\t\t\t 1(a). Sri. Ravi\r\n\t\t\t\t S/o Late David, \r\n\r\n\t\t\t3. SRI. SABARI\r\n\t\t\tS/o Selvam, \r\n\t\t\tBangalore - 560 100.",
+      "suitFiledOn": "2012-01-30",
+      "suitFor": "\tDeclaration and Possession..  ",
+      "suitClaim": "The Plaintiff prays that this Hon'ble Court may be pleased to pass judgment & decree:-\r\na) Declaring that the Plaintiff is the absolute owner.\r\nb) Directing the Defendant No.2 & 3 to deliver possession\r\n\r\nc) To grant permanent injunction.",
+      "plaintiffAdvocate": "  Sri. N.P.S.  ",
+      "plaintiffNumbers": "1",
+      "defendantAdvocate": "\tSri. M.J.A.",
+      "defendantNumbers": "2,3",
+      "exparte": true,
+      "exparteNumbers": "1(a)",
+      "orderText": "Suit of the plaintiff is dismissed with cost.",
+      "decreeDate": "2026-07-29",
+      "courtFee": "61,795-00",
+      "processFee": "20.00",
+      "includeSchedule": true,
+      "scheduleText": "\tAll that piece and parcel of the Property House Bearing No.70 & 71, measuring 1420 Sq.Ft., and bounded by;\r\n\r\n\tEast by : Site Nos.58 & 59,\r\n\tWest by : Road,\r\n\tNorth by : Private Property,\r\n\tSouth by : Site No.69."
+    }
+  },
+  {
+    "name": "os-no-schedule-no-exparte",
+    "kind": "os",
+    "data": {
+      "caseNumber": "11/2026",
+      "plaintiff": "A Plaintiff",
+      "defendants": "1. First Defendant",
+      "suitFiledOn": "2026-09-04",
+      "suitFor": "Injunction",
+      "suitClaim": "Claim line one",
+      "plaintiffAdvocate": "Sri. X",
+      "defendantAdvocate": "Sri. Y",
+      "exparte": false,
+      "orderText": "Suit is decreed.",
+      "decreeDate": "2026-09-05",
+      "courtFee": "1500",
+      "processFee": "20-50",
+      "includeSchedule": false
+    }
+  },
+  {
+    "name": "notice-comma-soup-address",
+    "kind": "notice",
+    "data": {
+      "hearingDate": "07-10-2026",
+      "caseNumber": "F.D.P.29/2019",
+      "plaintiff": "Nagaraja",
+      "defendant": "Lakshmamma",
+      "givenDay": "07th",
+      "givenMonth": "October",
+      "givenYear": "2026",
+      "variant": "PROPOSED",
+      "rpdPresent": true,
+      "commonAddress": "Kodanda Reddy, S/o Late Muniyappa, Aged about 62 years, Residing at No. 45, 3rd Cross, Kodigehalli, Bengaluru 560103",
+      "parties": [
+        { "number": "09", "useCommonAddress": true },
+        { "number": "10", "useCommonAddress": true }
+      ]
+    }
+  },
+  {
+    "name": "notice-ragged-multiline-address",
+    "kind": "notice",
+    "data": {
+      "hearingDate": "11-09-2026",
+      "caseNumber": "O.S. 1256/2022",
+      "plaintiff": "Nagaraja",
+      "defendant": "Lakshmamma",
+      "givenDay": "21st",
+      "givenMonth": "July",
+      "givenYear": "2026",
+      "variant": "LRS",
+      "rpdPresent": false,
+      "commonAddress": "  Smt. Lakshmamma  \n\n\tW/o Late Muniyappa ,\n\n   Aged about 70 years\n\tR/at No 12 , 4th Main , Yelahanka  ,\n\n\tBengaluru 560064  \n",
+      "parties": [{ "number": "3", "useCommonAddress": true }]
+    }
+  },
+  {
+    "name": "notice-long-address-per-party",
+    "kind": "notice",
+    "data": {
+      "hearingDate": "01-12-2026",
+      "caseNumber": "O.S. 99/2020",
+      "plaintiff": "Some Very Long Plaintiff Name Here",
+      "defendant": "Another Rather Long Defendant Name",
+      "givenDay": "1st",
+      "givenMonth": "December",
+      "givenYear": "2026",
+      "variant": "LRS",
+      "rpdPresent": true,
+      "packTwoPerPage": true,
+      "commonAddress": "Common Person, Bengaluru 560001",
+      "parties": [
+        {
+          "number": "1",
+          "useCommonAddress": false,
+          "address": "Sri Ramachandra Setty, S/o Late Venkatachalapathy Setty, Aged about 78 years, Residing at No. 1284/A, 9th Cross, 2nd Stage, Rajajinagar Industrial Suburb, Near Basaveshwara Temple, Bengaluru 560010"
+        },
+        { "number": "2", "useCommonAddress": true }
+      ]
+    }
+  }
+]

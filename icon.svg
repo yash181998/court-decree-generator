@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Decree Generator">
+  <rect width="512" height="512" rx="96" fill="#1f4e79"/>
+  <rect x="136" y="96" width="240" height="320" rx="16" fill="#ffffff"/>
+  <g fill="#1f4e79">
+    <rect x="172" y="148" width="168" height="18" rx="9"/>
+    <rect x="172" y="200" width="120" height="14" rx="7"/>
+    <rect x="172" y="238" width="168" height="14" rx="7"/>
+    <rect x="172" y="276" width="168" height="14" rx="7"/>
+    <rect x="172" y="314" width="96" height="14" rx="7"/>
+  </g>
+  <circle cx="340" cy="352" r="44" fill="#c8892a"/>
+  <path d="M340 330l7 15 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2z" fill="#ffffff"/>
+</svg>

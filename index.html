@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f4e79">
+<meta name="color-scheme" content="light">
+<title>Decree Generator</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <h1>Decree Generator</h1>
+  <p>Prl. Senior Civil Judge, Bengaluru Rural District, Bengaluru</p>
+</header>
+
+<main>
+  <p class="privacy">Everything runs on this device. Nothing you type is uploaded.</p>
+
+  <nav class="tabs">
+    <button type="button" class="tab is-active" data-case="mc">M.C.</button>
+    <button type="button" class="tab" data-case="os">O.S.</button>
+    <button type="button" class="tab" data-case="notice">Notice</button>
+  </nav>
+
+  <form id="decree-form" autocomplete="off" novalidate>
+    <input type="hidden" id="caseType" value="mc">
+
+    <!-- ---------------------------------------------------------------- -->
+    <section class="panel" data-panel="mc">
+      <fieldset>
+        <legend>Case</legend>
+        <label>Case number
+          <input type="text" id="mc-caseNumber" placeholder="663/2026" inputmode="text">
+          <small>Right-side header of every page, and the centred heading.</small>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Parties</legend>
+        <label class="check">
+          <input type="checkbox" id="mc-bothPetitioners" checked>
+          <span>Both parties are Petitioners (same advocate) &mdash; Respondent/s becomes &ldquo;Nil&rdquo;</span>
+        </label>
+
+        <label>Petitioner/s
+          <textarea id="mc-petitioners" rows="9" placeholder="1. Navitha V&#10;Daughter of Venkatappa&#10;Aged about 33 years&#10;..."></textarea>
+          <small>One document line per line. Leave a blank line between petitioners.</small>
+        </label>
+
+        <label data-only="separate">Respondent/s
+          <textarea id="mc-respondents" rows="7" placeholder="Mr.SRINIVAS, R&#10;S/o. Reddappa Chari&#10;..."></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Petition</legend>
+        <label>Suit filed on
+          <input type="date" id="mc-suitFiledOn">
+        </label>
+
+        <label>Nature of Petition
+          <select id="mc-natureOfPetition">
+            <option value="divorce-act">Under section 10(1) (ix) of Indian Divorce Act 1869</option>
+            <option value="hindu-marriage-act">Under section 13(1) (i-a) of Hindu Marriage Act</option>
+            <option value="custom">Other (type below)</option>
+          </select>
+        </label>
+        <label data-only="nature-custom">Nature of Petition text
+          <input type="text" id="mc-natureCustom" placeholder="Under section ...">
+        </label>
+
+        <label>Petition Claim
+          <textarea id="mc-petitionClaim" rows="10" placeholder="Paste the claim here. Blank lines are kept as blank lines."></textarea>
+          <small>First line continues the &ldquo;Petition Claim :&rdquo; row; each later line becomes its own justified paragraph.</small>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Advocates</legend>
+        <label>Advocate for the Petitioner/s
+          <input type="text" id="mc-petitionerAdvocate" placeholder="Sri. Basava Prasad Kunale">
+        </label>
+        <label data-only="separate">Advocate for the Respondent
+          <input type="text" id="mc-respondentAdvocate" placeholder="Lavanya K">
+        </label>
+        <p class="preview" id="mc-disposal-preview"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Order</legend>
+        <label>ORDER
+          <textarea id="mc-orderText" rows="7" placeholder="The petition filed by the petitioners Under Section 13B of Hindu Marriage Act is hereby allowed.&#10;..."></textarea>
+        </label>
+        <label>Decree date
+          <input type="date" id="mc-decreeDate">
+          <small>Rendered as &ldquo;Dated this the 25<sup>th</sup> August 2026.&rdquo;</small>
+        </label>
+      </fieldset>
+    </section>
+
+    <!-- ---------------------------------------------------------------- -->
+    <section class="panel is-hidden" data-panel="os">
+      <fieldset>
+        <legend>Case</legend>
+        <label>Case number
+          <input type="text" id="os-caseNumber" placeholder="160/2012">
+          <small>Right-side header of every page, and the centred heading.</small>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Parties</legend>
+        <label>Plaintiff
+          <textarea id="os-plaintiff" rows="7" placeholder="Smt. J. SARASWATHI&#10;W/o Late M.S.Jagannathan,&#10;..."></textarea>
+        </label>
+        <label>Defendant/s
+          <textarea id="os-defendants" rows="12" placeholder="1. Sri. DEVID&#10;S/o Arogyaswamy,&#10;...&#10;&#10;2. SRI. SELVAM&#10;..."></textarea>
+          <small>Paste exactly as it should appear &mdash; numbering comes from your text.</small>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Suit</legend>
+        <label>Suit filed on
+          <input type="date" id="os-suitFiledOn">
+        </label>
+        <label>Suit for
+          <input type="text" id="os-suitFor" placeholder="Declaration and Possession..">
+        </label>
+        <label>Suit Claim
+          <textarea id="os-suitClaim" rows="10" placeholder="Paste the claim here. Blank lines are kept as blank lines."></textarea>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Advocates</legend>
+        <label>Advocate for Plaintiff
+          <input type="text" id="os-plaintiffAdvocate" placeholder="Sri. N.P.S.">
+        </label>
+        <label>Plaintiff No. (optional)
+          <input type="text" id="os-plaintiffNumbers" placeholder="1">
+          <small>Leave blank to omit &ldquo;No.&rdquo; entirely.</small>
+        </label>
+        <label>Advocate for Defendant
+          <input type="text" id="os-defendantAdvocate" placeholder="Sri. M.J.A.">
+        </label>
+        <label>Defendant No. (optional)
+          <input type="text" id="os-defendantNumbers" placeholder="2,3">
+          <small>Leave blank to omit &ldquo;No.&rdquo; entirely.</small>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="os-exparte">
+          <span>Add &ldquo;placed Exparte&rdquo;</span>
+        </label>
+        <label data-only="exparte">Exparte Defendant No. (optional)
+          <input type="text" id="os-exparteNumbers" placeholder="1(a)">
+        </label>
+        <p class="preview" id="os-disposal-preview"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Order</legend>
+        <label>ORDER
+          <textarea id="os-orderText" rows="6" placeholder="Suit of the plaintiff is dismissed with cost."></textarea>
+        </label>
+        <label>Decree date
+          <input type="date" id="os-decreeDate">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Cost of the suit</legend>
+        <label>Court fee paid on plaint
+          <input type="text" id="os-courtFee" placeholder="61795-00" inputmode="decimal">
+        </label>
+        <label>Process Fee
+          <input type="text" id="os-processFee" placeholder="20-00" inputmode="decimal">
+        </label>
+        <p class="preview">Total: <strong id="os-total">-</strong></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Schedule</legend>
+        <label class="check">
+          <input type="checkbox" id="os-includeSchedule" checked>
+          <span>Include the SCHEDULE section</span>
+        </label>
+        <label data-only="schedule">Schedule
+          <textarea id="os-scheduleText" rows="9" placeholder="All that piece and parcel of the Property ... and bounded by;&#10;&#10;East by : Site Nos.58 &amp; 59,&#10;West by : Road,&#10;North by : Private Property,&#10;South by : Site No.69."></textarea>
+          <small>Lines starting with East/West/North/South by : are indented like the reference decree.</small>
+        </label>
+      </fieldset>
+    </section>
+
+    <!-- ---------------------------------------------------------------- -->
+    <section class="panel is-hidden" data-panel="notice">
+      <fieldset>
+        <legend>Case details</legend>
+        <label>Court line
+          <textarea id="n-courtLine" rows="2"></textarea>
+        </label>
+        <label>Hearing date
+          <input type="date" id="n-hearingPicker">
+          <small>Printed as <span id="n-hearingEcho">&mdash;</span></small>
+        </label>
+        <label>Case number
+          <input type="text" id="n-caseNumber" placeholder="O.S. 1256/2022">
+        </label>
+        <label>Plaintiff
+          <input type="text" id="n-plaintiff" placeholder="Nagaraja">
+        </label>
+        <label>Defendant
+          <input type="text" id="n-defendant" placeholder="Lakshmamma">
+        </label>
+        <label class="check">
+          <input type="checkbox" id="n-appearSameAsHg" checked>
+          <span>Appearance date is the same as the hearing date</span>
+        </label>
+        <label data-only="appear">Appear on
+          <input type="date" id="n-appearPicker">
+        </label>
+        <label>Given date (signature line)
+          <input type="date" id="n-givenPicker">
+          <small>Printed as <span id="n-givenEcho">&mdash;</span></small>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Application type</legend>
+        <label class="check">
+          <input type="radio" name="n-variant" value="LRS" checked>
+          <span>U/O 22 Rule 4 of CPC &mdash; &ldquo;Lr&rsquo;s of Defendant No.&rdquo;</span>
+        </label>
+        <label class="check">
+          <input type="radio" name="n-variant" value="PROPOSED">
+          <span>U/O 1 Rule 10(2) of CPC &mdash; &ldquo;Proposed Defendant No.&rdquo;</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Copies &amp; layout</legend>
+        <label class="check">
+          <input type="checkbox" id="n-rpdPresent">
+          <span>RPD present</span>
+        </label>
+        <p class="preview" id="n-rpdHint"></p>
+        <label class="check" data-only="pack">
+          <input type="checkbox" id="n-packTwoPerPage">
+          <span>Put two different defendants on one page</span>
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Address</legend>
+        <label>Common address
+          <textarea id="n-commonAddress" rows="6" placeholder="Start with the name, then the rest &mdash; paste in any shape and it is split into notice lines automatically."></textarea>
+        </label>
+        <button type="button" id="n-tidyAddress" class="secondary">Tidy formatting</button>
+        <small>The name goes at the top. Tick &ldquo;same address&rdquo; on a defendant to reuse it, so only the number changes.</small>
+      </fieldset>
+
+      <fieldset>
+        <legend>Defendants</legend>
+        <div id="n-parties"></div>
+        <button type="button" id="n-addParty" class="secondary">+ Add defendant</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Batch</legend>
+        <small>Each Generate makes its own file. Queue several cases here to put them in one document &mdash; each starts on a fresh page.</small>
+        <ol id="n-batchList" class="batch"></ol>
+        <div class="row">
+          <button type="button" id="n-addToBatch" class="secondary">Add this case to batch</button>
+          <button type="button" id="n-clearBatch" class="secondary">Clear batch</button>
+        </div>
+      </fieldset>
+
+      <p class="preview" id="n-fit"></p>
+    </section>
+
+    <div class="actions">
+      <button type="submit" id="generate">Generate DOCX</button>
+      <span id="status" role="status"></span>
+    </div>
+
+    <p class="result is-hidden" id="result">
+      <a id="result-link" href="#" download>Tap here if the file did not save</a>
+    </p>
+  </form>
+</main>
+
+<template id="n-partyTemplate">
+  <fieldset class="party">
+    <legend></legend>
+    <label><span class="p-number-label">Defendant No.</span>
+      <input type="text" class="p-number" placeholder="9">
+    </label>
+    <label class="check">
+      <input type="checkbox" class="p-same" checked>
+      <span>Use the common address</span>
+    </label>
+    <label class="p-address-wrap">Address
+      <textarea class="p-address" rows="5"></textarea>
+    </label>
+    <p class="preview p-preview"></p>
+    <div class="row">
+      <button type="button" class="secondary duplicate">Another number, same details</button>
+      <button type="button" class="secondary remove">Remove</button>
+    </div>
+  </fieldset>
+</template>
+
+<script src="js/jszip.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "decree-generator-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Offline browser app for M.C. decrees, O.S. decrees and court notices. Static files only - no server is needed once deployed.",
+  "scripts": {
+    "start": "npx --yes http-server . -p 4500 -c-1",
+    "build": "node tools/build-base-parts.js && node tools/build-notice-template.js",
+    "test": "node tools/check-parity.js"
+  }
+}

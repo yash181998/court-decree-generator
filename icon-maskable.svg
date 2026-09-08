@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Decree Generator">
+  <rect width="512" height="512" fill="#1f4e79"/>
+  <rect x="176" y="140" width="160" height="216" rx="12" fill="#ffffff"/>
+  <g fill="#1f4e79">
+    <rect x="200" y="176" width="112" height="14" rx="7"/>
+    <rect x="200" y="212" width="80" height="11" rx="5.5"/>
+    <rect x="200" y="240" width="112" height="11" rx="5.5"/>
+    <rect x="200" y="268" width="112" height="11" rx="5.5"/>
+    <rect x="200" y="296" width="64" height="11" rx="5.5"/>
+  </g>
+</svg>

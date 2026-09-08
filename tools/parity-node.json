@@ -1,0 +1,30 @@
+{
+  "mc-tabbed-paste": {
+    "length": 22707,
+    "sha256": "13c4275a429a8f49ea2a033b07c9133849b21069f90c06ef9b51b79d174e3d54"
+  },
+  "mc-two-advocates": {
+    "length": 21408,
+    "sha256": "add1735d652f553ebefb7f168c68a67704cf851d350d85f59694d437194042b3"
+  },
+  "os-tabbed-defendants": {
+    "length": 57221,
+    "sha256": "b415c2ccadd9a39ec9e86214fff5c2c6cfc523a3f017881377475e3c0636fb3c"
+  },
+  "os-no-schedule-no-exparte": {
+    "length": 47881,
+    "sha256": "cfa38a3761053160539c6354ef03aa8041c3ffe293976106cf6f2732347ec0c4"
+  },
+  "notice-comma-soup-address": {
+    "length": 20116,
+    "sha256": "fcaa6859c1e92ca7c771b5af514cb96f64c88ee8ee728a95321bb5da2be99dd9"
+  },
+  "notice-ragged-multiline-address": {
+    "length": 20082,
+    "sha256": "4460de5b854c42ff7dce96b83f588116e24afadffa8566326d31512130773187"
+  },
+  "notice-long-address-per-party": {
+    "length": 18960,
+    "sha256": "b6c856ad6f8932114df6053ba0ad4af6e9602b1d13cf45c6e4e4150e717470de"
+  }
+}
