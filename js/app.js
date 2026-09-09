@@ -103,6 +103,50 @@ function showFormatPreview(fieldId) {
   if (!preview) return;
   const lines = smartFormatParty(val(fieldId));
   preview.textContent = lines.length ? lines.join('\n') : '';
+
+  const dup = findDuplicateBlock(lines);
+  let warning = preview.nextElementSibling;
+  if (!warning || !warning.classList.contains('format-warning')) {
+    warning = document.createElement('p');
+    warning.className = 'format-warning is-hidden';
+    preview.insertAdjacentElement('afterend', warning);
+  }
+  if (dup) {
+    warning.textContent =
+      `\u26a0 The lines starting with "${dup.text}" appear twice \u2014 check you ` +
+      `haven\u2019t pasted the same block in more than once.`;
+    warning.classList.remove('is-hidden');
+  } else {
+    warning.classList.add('is-hidden');
+  }
+}
+
+// A run of 3+ consecutive non-blank lines that repeats elsewhere almost always
+// means the same chunk was pasted in twice by accident. This only warns - a
+// genuinely shared address for two different people is common and left alone.
+const MIN_DUPLICATE_RUN = 3;
+
+function findDuplicateBlock(lines) {
+  const nonBlank = [];
+  for (let i = 0; i < lines.length; i += 1) {
+    if (lines[i] !== '') nonBlank.push(i);
+  }
+  for (let a = 0; a < nonBlank.length; a += 1) {
+    for (let b = a + MIN_DUPLICATE_RUN; b < nonBlank.length; b += 1) {
+      let run = 0;
+      while (
+        a + run < nonBlank.length &&
+        b + run < nonBlank.length &&
+        lines[nonBlank[a + run]] === lines[nonBlank[b + run]]
+      ) {
+        run += 1;
+      }
+      if (run >= MIN_DUPLICATE_RUN) {
+        return { text: lines[nonBlank[a]].slice(0, 50) };
+      }
+    }
+  }
+  return null;
 }
 
 form.addEventListener('input', refresh);
