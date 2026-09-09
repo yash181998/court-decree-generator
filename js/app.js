@@ -1,6 +1,6 @@
 import * as mc from './mc.js';
 import * as os from './os.js';
-import { headerXml, PARTY_FORMAT_BUILD } from './common.js';
+import { headerXml, PARTY_FORMAT_BUILD, smartFormatParty } from './common.js';
 import { packDocx, safeFileName } from './docx.js';
 import { setupNotice, refreshNotice, buildNotice, batchSize } from './notice-ui.js';
 
@@ -84,7 +84,25 @@ function refresh() {
   const total = court == null && process == null ? null : (court || 0) + (process || 0);
   $('os-total').textContent = os.formatAmount(total);
 
+  showFormatPreview('mc-petitioners');
+  showFormatPreview('mc-respondents');
+  showFormatPreview('os-plaintiff');
+  showFormatPreview('os-defendants');
+
   refreshNotice();
+}
+
+/**
+ * Renders exactly what smartFormatParty will print, so scrambled paste (a
+ * numbering marker stuck mid-line, missing markers, duplicated fragments -
+ * common when copying from a PDF table) is visible and fixable before
+ * generating, instead of only showing up in the finished .docx.
+ */
+function showFormatPreview(fieldId) {
+  const preview = $(`${fieldId}-preview`);
+  if (!preview) return;
+  const lines = smartFormatParty(val(fieldId));
+  preview.textContent = lines.length ? lines.join('\n') : '';
 }
 
 form.addEventListener('input', refresh);

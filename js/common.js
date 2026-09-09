@@ -2,7 +2,7 @@ import { esc, run, tab, para, textPara, emptyPara, labelPara, valuePara } from '
 
 // Bump this string whenever smartFormatParty's logic changes. Shown on screen
 // so a stale cached copy is obvious instead of silently reproducing old bugs.
-export const PARTY_FORMAT_BUILD = 'party-fmt-3 (2026-09-10)';
+export const PARTY_FORMAT_BUILD = 'party-fmt-4 (2026-09-10, live preview)';
 
 export const COURT_TITLE =
   'IN THE COURT OF THE PRL. SENIOR CIVIL JUDGE, BENGALURU RURAL DISTRICT, BENGALURU.';
