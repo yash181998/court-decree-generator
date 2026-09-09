@@ -89,10 +89,15 @@ export function labelPara(label, valueRuns, opts = {}) {
   });
 }
 
-/** Continuation line of a label block, aligned under the value column. */
+/**
+ * Continuation line of a label block, aligned under the value column. A plain
+ * left indent (not left+firstLine) so that if a line is unusually long and
+ * wraps inside Word, the wrapped portion stays under the same column instead
+ * of falling back to a shallower indent.
+ */
 export function valuePara(text, opts = {}) {
   return para([run(text, opts.runOpts || {})], {
-    ind: { left: 2160, firstLine: 720 },
+    ind: { left: VALUE_LEFT },
     jc: opts.jc || 'both',
     after: opts.after,
   });
