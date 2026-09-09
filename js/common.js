@@ -62,6 +62,68 @@ export function toLines(text) {
   return lines;
 }
 
+// Matches "1.", "2.", "1(a)." etc. at the start of a new party/defendant entry.
+const PARTY_START = /^\d+\s*(\([a-z0-9]+\))?\s*[.)]/i;
+
+// Words that always begin their own detail line in a cause-title address, so a
+// line starting with one of these is never merged into the line before it.
+const DETAIL_START =
+  /^(s\/o|d\/o|w\/o|c\/o|h\/o|daughter|son|wife|husband|aged|age|major|minor|r\/at|r\/o|residing|resident|rep\.?\s*by|represented|since|presently|permanent|through|occupation)\b/i;
+
+function endsWithPunctuation(line) {
+  return /[,.;:]$/.test(line);
+}
+
+/**
+ * Reconstructs a party/defendant block pasted from a photo (Google Lens, phone
+ * screenshots, etc.), which tends to add blank lines between every visual line
+ * and to wrap a long name across two lines. Two passes, both conservative so a
+ * cleanly pasted block is left untouched:
+ *  1. Drop blank lines that are just scan noise, keeping exactly one as a
+ *     separator when it precedes a new numbered party ("2. Rama,").
+ *  2. Re-join a party's header line with the next line when the header lacks
+ *     ending punctuation and the next line is not itself a new party or a
+ *     recognised detail starter (S/o, Aged, Residing, ...) - this is what
+ *     turns "1. Ms. UNION BANK OF" + "INDIA," back into one line, while never
+ *     touching ordinary detail lines like "Daughter of Venkatappa".
+ */
+export function smartFormatParty(text) {
+  const rawLines = String(text == null ? '' : text)
+    .replace(/\r\n?/g, '\n')
+    .split('\n')
+    .map((line) => line.replace(/[ \t\u00a0\u200b]+/g, ' ').trim());
+
+  const collapsed = [];
+  for (let i = 0; i < rawLines.length; i += 1) {
+    const line = rawLines[i];
+    if (line !== '') { collapsed.push(line); continue; }
+    let j = i;
+    while (j < rawLines.length && rawLines[j] === '') j += 1;
+    const next = rawLines[j];
+    if (next && PARTY_START.test(next) && collapsed.length && collapsed[collapsed.length - 1] !== '') {
+      collapsed.push('');
+    }
+  }
+  while (collapsed.length && collapsed[0] === '') collapsed.shift();
+  while (collapsed.length && collapsed[collapsed.length - 1] === '') collapsed.pop();
+
+  const out = [];
+  for (let i = 0; i < collapsed.length; i += 1) {
+    let line = collapsed[i];
+    const isHeader = out.length === 0 || PARTY_START.test(line);
+    if (isHeader) {
+      while (!endsWithPunctuation(line)) {
+        const next = collapsed[i + 1];
+        if (!next || PARTY_START.test(next) || DETAIL_START.test(next)) break;
+        line = `${line} ${next}`;
+        i += 1;
+      }
+    }
+    out.push(line);
+  }
+  return out;
+}
+
 export function documentOpen() {
   return (
     '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
