@@ -72,7 +72,8 @@ const VALUE_LEFT = 2880;
 
 /**
  * `Label` <tab> `:` <tab> value — the heading rows (Petitioner/s, Suit filed on, ...).
- * Wrapped lines fall back to the left margin unless `wrapToValue` is set.
+ * If the value is long and wraps in Word, the wrapped lines stay at the value column
+ * (2880) instead of falling back to the left margin.
  */
 export function labelPara(label, valueRuns, opts = {}) {
   const runs = [
@@ -85,7 +86,7 @@ export function labelPara(label, valueRuns, opts = {}) {
     tabs: LABEL_TABS,
     jc: opts.jc || 'both',
     after: opts.after,
-    ind: opts.wrapToValue ? { left: VALUE_LEFT, hanging: VALUE_LEFT } : undefined,
+    ind: { left: VALUE_LEFT, hanging: VALUE_LEFT },
   });
 }
 
