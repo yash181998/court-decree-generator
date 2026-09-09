@@ -74,6 +74,13 @@ function endsWithPunctuation(line) {
   return /[,.;:]$/.test(line);
 }
 
+// True for a fragment with no lowercase letters ("INDIA,", "BAGALUR-562149"). A
+// name/title split by a photo scan reliably stays all-caps across the split,
+// which is what tells it apart from the next real address line (mixed case).
+function isShouty(line) {
+  return /[A-Z]/.test(line) && !/[a-z]/.test(line);
+}
+
 /**
  * Reconstructs a party/defendant block pasted from a photo (Google Lens, phone
  * screenshots, etc.), which tends to add blank lines between every visual line
@@ -114,7 +121,7 @@ export function smartFormatParty(text) {
     if (isHeader) {
       while (!endsWithPunctuation(line)) {
         const next = collapsed[i + 1];
-        if (!next || PARTY_START.test(next) || DETAIL_START.test(next)) break;
+       if (!next || PARTY_START.test(next) || DETAIL_START.test(next) || !isShouty(next)) break;
         line = `${line} ${next}`;
         i += 1;
       }
