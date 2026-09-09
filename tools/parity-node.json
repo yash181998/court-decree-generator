@@ -1,4 +1,12 @@
 {
+  "os-ocr-company-name-and-mixed-case-address": {
+    "length": 56549,
+    "sha256": "6c57e932d07b3d9c5a2467e0cc817430cbdae101e70947dda60f0cc7cb15cc24"
+  },
+  "os-ocr-scanned-defendants": {
+    "length": 53164,
+    "sha256": "542a1e75240163a3051f4922ffc62c17248538a5216397c3378351a9dd501262"
+  },
   "mc-tabbed-paste": {
     "length": 22707,
     "sha256": "13c4275a429a8f49ea2a033b07c9133849b21069f90c06ef9b51b79d174e3d54"

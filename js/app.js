@@ -1,6 +1,6 @@
 import * as mc from './mc.js';
 import * as os from './os.js';
-import { headerXml } from './common.js';
+import { headerXml, PARTY_FORMAT_BUILD } from './common.js';
 import { packDocx, safeFileName } from './docx.js';
 import { setupNotice, refreshNotice, buildNotice, batchSize } from './notice-ui.js';
 
@@ -13,6 +13,9 @@ const resultLink = $('result-link');
 const DISPOSAL_PREFIX =
   'This Petition coming on this day for final disposal before Sri. Abdul Saleem B.A. (LAW) L.L.B. N. ' +
   'Prl. Senior Civil Judge, Bengaluru Rural District, Bengaluru, in the presence of ';
+
+const buildTagEl = $('build-tag');
+if (buildTagEl) buildTagEl.textContent = `\u00b7 ${PARTY_FORMAT_BUILD}`;
 
 function setStatus(message, isError) {
   statusEl.textContent = message;

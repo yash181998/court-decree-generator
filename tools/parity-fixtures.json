@@ -1,5 +1,45 @@
 [
   {
+    "name": "os-ocr-company-name-and-mixed-case-address",
+    "kind": "os",
+    "data": {
+      "caseNumber": "1/25",
+      "plaintiff": "A Plaintiff",
+      "defendants": "1)DXC TECHNOLOGY INDIA PRIVATE LIMITED\n\nBranch office at Hewlett Packard Avenue\n\nKonappa Agrahara\n\nElectronic City\n\nBengaluru 5600100\n\nRepresented by its Managing Director\n\nMr. Nachiket Vibhankar Sukhtankar\n\nhaving his office in Bengaluru,\n\nwith\n\nRegistered Office at 9th floor, Block D\n\nLittlewood Tower, TRIL Info Park\n\nRamanujan IT City\n\nRajiv Gandhi Salai, Taramani\n\nChennai 600113\n\nRepresented by its Company Secretary\n\nMs, Sailaja Balasubramaniyan @Chennai\n\n2) Ms.Mia Andrews, Global HR Director DXC Technology India Private Limited\n\nwith Registered Office at 9th floor, Block D Littlewood Tower, TRIL Info Park\n\nRamanujan IT City Rajiv Gandhi Salai, Taramani",
+      "suitFiledOn": "2025-01-10",
+      "suitFor": "Recovery",
+      "suitClaim": "The Plaintiff prays for recovery of the suit amount.",
+      "plaintiffAdvocate": "Sri. A",
+      "defendantAdvocate": "Sri. B",
+      "exparte": false,
+      "orderText": "Suit is decreed.",
+      "decreeDate": "2026-09-09",
+      "courtFee": "500",
+      "processFee": "20",
+      "includeSchedule": false
+    }
+  },
+  {
+    "name": "os-ocr-scanned-defendants",
+    "kind": "os",
+    "data": {
+      "caseNumber": "50/2026",
+      "plaintiff": "A Plaintiff",
+      "defendants": "1. Ms. UNION BANK OF\n    INDIA,\n\nRepresented by its Manager/ Authorised Officer,\n\nBagalur Branch,\nSyNo.329/2, Ground Floor,\n\nB. Anjinappa Complex,\n\nGundappa Circle, BAGALUR-562149\n\n2. Rama,\n\n\nBagalur Branch,\n\nSyNo.329/2, Ground Floor,\nB. Anjinappa Complex,\n\nGundappa Circle, \nBAGALUR-562149",
+      "suitFiledOn": "2026-01-15",
+      "suitFor": "Recovery",
+      "suitClaim": "The Plaintiff prays for recovery of the suit amount.",
+      "plaintiffAdvocate": "Sri. A",
+      "defendantAdvocate": "Sri. B",
+      "exparte": false,
+      "orderText": "Suit is decreed.",
+      "decreeDate": "2026-09-08",
+      "courtFee": "500",
+      "processFee": "20",
+      "includeSchedule": false
+    }
+  },
+  {
     "name": "mc-tabbed-paste",
     "kind": "mc",
     "data": {

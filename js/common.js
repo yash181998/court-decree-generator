@@ -1,5 +1,9 @@
 import { esc, run, tab, para, textPara, emptyPara, labelPara, valuePara } from './ooxml.js';
 
+// Bump this string whenever smartFormatParty's logic changes. Shown on screen
+// so a stale cached copy is obvious instead of silently reproducing old bugs.
+export const PARTY_FORMAT_BUILD = 'party-fmt-3 (2026-09-10)';
+
 export const COURT_TITLE =
   'IN THE COURT OF THE PRL. SENIOR CIVIL JUDGE, BENGALURU RURAL DISTRICT, BENGALURU.';
 const JUDGE_NAME = 'Abdul Saleem';
@@ -89,10 +93,10 @@ function isShouty(line) {
  *  1. Drop blank lines that are just scan noise, keeping exactly one as a
  *     separator when it precedes a new numbered party ("2. Rama,").
  *  2. Re-join a party's header line with the next line when the header lacks
- *     ending punctuation and the next line is not itself a new party or a
- *     recognised detail starter (S/o, Aged, Residing, ...) - this is what
- *     turns "1. Ms. UNION BANK OF" + "INDIA," back into one line, while never
- *     touching ordinary detail lines like "Daughter of Venkatappa".
+ *     ending punctuation and the next line continues the same all-caps name
+ *     ("1. Ms. UNION BANK OF" + "INDIA,") - names in these documents are
+ *     conventionally capitals, so this never touches a genuine next detail
+ *     like "Konappa Agrahara" or "Daughter of Venkatappa", which are mixed case.
  */
 export function smartFormatParty(text) {
   const rawLines = String(text == null ? '' : text)
@@ -121,7 +125,7 @@ export function smartFormatParty(text) {
     if (isHeader) {
       while (!endsWithPunctuation(line)) {
         const next = collapsed[i + 1];
-       if (!next || PARTY_START.test(next) || DETAIL_START.test(next) || !isShouty(next)) break;
+        if (!next || PARTY_START.test(next) || DETAIL_START.test(next) || !isShouty(next)) break;
         line = `${line} ${next}`;
         i += 1;
       }
@@ -186,7 +190,7 @@ export function headingBlock(caseTitle, decreeWord) {
  * all aligned under the value column.
  */
 export function partyBlock(label, text) {
-  const lines = toLines(text);
+  const lines = smartFormatParty(text);
   if (!lines.length) lines.push('Nil');
   const out = [labelPara(label, [run(lines[0])])];
   for (let i = 1; i < lines.length; i++) out.push(valuePara(lines[i]));

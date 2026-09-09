@@ -1,6 +1,6 @@
 // Caches the whole app so it keeps working with no internet connection.
 // Bump CACHE when any file below changes, so phones pick up the new version.
-const CACHE = 'decree-v2';
+const CACHE = 'decree-v4';
 
 const ASSETS = [
   '.',
@@ -42,8 +42,10 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
-    // Prefer the network so a redeploy is picked up, fall back to cache offline.
-    fetch(event.request)
+    // no-store: a plain network-first fetch can still be answered from the
+    // browser's own HTTP cache and silently serve yesterday's JS. Force a real
+    // round trip so a redeploy is never masked by a stale cached response.
+    fetch(event.request, { cache: 'no-store' })
       .then((response) => {
         const copy = response.clone();
         caches.open(CACHE).then((cache) => cache.put(event.request, copy));
