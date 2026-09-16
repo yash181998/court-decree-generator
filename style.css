@@ -156,6 +156,24 @@ small { display: block; margin-top: 5px; font-weight: 400; color: var(--muted); 
 .row { display: flex; gap: 10px; flex-wrap: wrap; }
 .row .secondary { flex: 1; min-width: 150px; }
 
+.advocate-rows { margin-top: 6px; }
+.advocate-row { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+.advocate-row .adv-name { flex: 3; margin-top: 0; }
+.advocate-row .adv-no { flex: 2; margin-top: 0; }
+.advocate-row .remove-advocate {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 7px;
+  color: #b42318;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+button.add-advocate { margin-top: 8px; font-size: 13px; padding: 8px 12px; }
+
 fieldset.party {
   background: #fbfcfd;
   border-radius: 8px;

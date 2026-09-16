@@ -132,14 +132,27 @@ function claimBlock(label, text) {
   return out.join('');
 }
 
-function disposalSentence(data) {
-  const plaintiffNo = C.cleanText(data.plaintiffNumbers);
-  const defNo = C.cleanText(data.defendantNumbers);
+/** Joins one or more `{advocate, numbers}` entries as "{name} Advocate for {role} No.{n}, ...". */
+function advocatePhrase(entries, role) {
+  return entries
+    .map((e, i) => ({ advocate: C.cleanText(e.advocate), numbers: C.cleanText(e.numbers), i }))
+    .filter((e) => e.i === 0 || e.advocate)
+    .map((e) => `${e.advocate} Advocate for ${role}` + (e.numbers ? ` No.${e.numbers}` : ''))
+    .join(', ');
+}
+
+export function disposalSentence(data) {
   const exNo = C.cleanText(data.exparteNumbers);
-  let s = C.DISPOSAL_PREFIX + `${C.cleanText(data.plaintiffAdvocate)} Advocate for Plaintiff`;
-  if (plaintiffNo) s += ` No.${plaintiffNo}`;
-  s += ` and ${C.cleanText(data.defendantAdvocate)} Advocate for Defendant`;
-  if (defNo) s += ` No.${defNo}`;
+  const plaintiffEntries = [
+    { advocate: data.plaintiffAdvocate, numbers: data.plaintiffNumbers },
+    ...(data.plaintiffAdvocatesExtra || []),
+  ];
+  const defendantEntries = [
+    { advocate: data.defendantAdvocate, numbers: data.defendantNumbers },
+    ...(data.defendantAdvocatesExtra || []),
+  ];
+  let s = C.DISPOSAL_PREFIX + advocatePhrase(plaintiffEntries, 'Plaintiff');
+  s += ` and ${advocatePhrase(defendantEntries, 'Defendant')}`;
   if (data.exparte) s += `, Defendant${exNo ? ` No. ${exNo}` : ''}  placed Exparte`;
   return s + '.';
 }

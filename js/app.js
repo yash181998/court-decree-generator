@@ -61,6 +61,7 @@ function refresh() {
   toggle('[data-only="nature-custom"]', val('mc-natureOfPetition') === 'custom');
   toggle('[data-only="exparte"]', val('os-exparte'));
   toggle('[data-only="schedule"]', val('os-includeSchedule'));
+  syncSuitFor();
 
   const petitionerAdvocate = val('mc-petitionerAdvocate').trim() || '\u2026';
   $('mc-disposal-preview').textContent = both
@@ -68,16 +69,16 @@ function refresh() {
     : `${DISPOSAL_PREFIX}${petitionerAdvocate} Advocate for the Petitioner ` +
       `and ${val('mc-respondentAdvocate').trim() || '\u2026'} Advocate for Respondent.`;
 
-  const plaintiffNo = val('os-plaintiffNumbers').trim();
-  const defNo = val('os-defendantNumbers').trim();
-  const exNo = val('os-exparteNumbers').trim();
-  let osSentence =
-    `${DISPOSAL_PREFIX}${val('os-plaintiffAdvocate').trim() || '\u2026'} Advocate for Plaintiff`;
-  if (plaintiffNo) osSentence += ` No.${plaintiffNo}`;
-  osSentence += ` and ${val('os-defendantAdvocate').trim() || '\u2026'} Advocate for Defendant`;
-  if (defNo) osSentence += ` No.${defNo}`;
-  if (val('os-exparte')) osSentence += `, Defendant${exNo ? ` No. ${exNo}` : ''}  placed Exparte`;
-  $('os-disposal-preview').textContent = osSentence + '.';
+  $('os-disposal-preview').textContent = os.disposalSentence({
+    plaintiffAdvocate: val('os-plaintiffAdvocate').trim() || '\u2026',
+    plaintiffNumbers: val('os-plaintiffNumbers'),
+    plaintiffAdvocatesExtra: extraAdvocates('plaintiff'),
+    defendantAdvocate: val('os-defendantAdvocate').trim() || '\u2026',
+    defendantNumbers: val('os-defendantNumbers'),
+    defendantAdvocatesExtra: extraAdvocates('defendant'),
+    exparte: val('os-exparte'),
+    exparteNumbers: val('os-exparteNumbers'),
+  });
 
   const court = os.parseAmount(val('os-courtFee'));
   const process = os.parseAmount(val('os-processFee'));
@@ -91,6 +92,52 @@ function refresh() {
 
   refreshNotice();
 }
+
+/** The dropdown drives the free-text field; "Other" leaves it for manual typing. */
+function syncSuitFor() {
+  const choice = val('os-suitForSelect');
+  toggle('[data-only="suitfor-custom"]', choice === 'custom');
+  if (choice && choice !== 'custom') $('os-suitFor').value = choice;
+}
+
+/** Advocate rows added beyond the first (which carries the fixed field ids). */
+function extraAdvocates(role) {
+  const container = $(`os-${role}Advocates`);
+  if (!container) return [];
+  return Array.from(container.querySelectorAll('.advocate-row'))
+    .slice(1)
+    .map((row) => ({
+      advocate: row.querySelector('.adv-name').value,
+      numbers: row.querySelector('.adv-no').value,
+    }))
+    .filter((entry) => entry.advocate.trim());
+}
+
+function addAdvocateRow(role) {
+  const container = $(`os-${role}Advocates`);
+  if (!container) return;
+  const row = document.createElement('div');
+  row.className = 'advocate-row';
+  row.innerHTML =
+    '<input type="text" class="adv-name" placeholder="Sri. A.B.C">' +
+    '<input type="text" class="adv-no" placeholder="No.">' +
+    '<button type="button" class="remove-advocate" aria-label="Remove advocate">\u00d7</button>';
+  container.appendChild(row);
+}
+
+document.querySelectorAll('.add-advocate').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    addAdvocateRow(btn.dataset.add);
+    refresh();
+  });
+});
+
+form.addEventListener('click', (event) => {
+  if (event.target.classList.contains('remove-advocate')) {
+    event.target.closest('.advocate-row').remove();
+    refresh();
+  }
+});
 
 /**
  * Renders exactly what smartFormatParty will print, so scrambled paste (a
@@ -183,8 +230,10 @@ function collect() {
     suitClaim: val('os-suitClaim'),
     plaintiffAdvocate: val('os-plaintiffAdvocate'),
     plaintiffNumbers: val('os-plaintiffNumbers'),
+    plaintiffAdvocatesExtra: extraAdvocates('plaintiff'),
     defendantAdvocate: val('os-defendantAdvocate'),
     defendantNumbers: val('os-defendantNumbers'),
+    defendantAdvocatesExtra: extraAdvocates('defendant'),
     exparte: val('os-exparte'),
     exparteNumbers: val('os-exparteNumbers'),
     orderText: val('os-orderText'),
