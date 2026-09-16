@@ -5,7 +5,7 @@
   "description": "Offline browser app for M.C. decrees, O.S. decrees and court notices. Static files only - no server is needed once deployed.",
   "scripts": {
     "start": "npx --yes http-server . -p 4500 -c-1",
-    "build": "node tools/build-base-parts.js && node tools/build-notice-template.js",
+    "build": "node tools/build-timestamp.js && node tools/build-base-parts.js && node tools/build-notice-template.js",
     "test": "node tools/check-parity.js"
   }
 }

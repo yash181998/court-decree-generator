@@ -4,6 +4,7 @@ import * as C from './common.js';
 export const NATURE_PRESETS = {
   'divorce-act': 'Under section 10(1) (ix) of Indian Divorce Act 1869',
   'hindu-marriage-act': 'Under section 13(1) (i-a) of Hindu Marriage Act',
+  'hindu-marriage-act-13ab': 'Under section 13 (1), (i-a)(i-b) of the Hindu Marriage Act',
   'hindu-marriage-act-13b': 'Under Section 13B of the Hindu Marriage Act',
 };
 
