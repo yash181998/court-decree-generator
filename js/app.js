@@ -3,7 +3,6 @@ import * as os from './os.js';
 import { headerXml, PARTY_FORMAT_BUILD, smartFormatParty } from './common.js';
 import { packDocx, safeFileName } from './docx.js';
 import { setupNotice, refreshNotice, buildNotice, batchSize } from './notice-ui.js';
-import { BUILD_TIME } from './build-info.js';
 
 const $ = (id) => document.getElementById(id);
 const form = $('decree-form');
@@ -16,9 +15,14 @@ const DISPOSAL_PREFIX =
   'Prl. Senior Civil Judge, Bengaluru Rural District, Bengaluru, in the presence of ';
 
 const buildTagEl = $('build-tag');
-if (buildTagEl) {
-  buildTagEl.textContent = `\u00b7 Deployed ${BUILD_TIME}`;
-}
+// A missing/stale build-info.js (e.g. forgotten commit) must not break the rest of the app.
+import('./build-info.js')
+  .then(({ BUILD_TIME }) => {
+    if (buildTagEl) buildTagEl.textContent = `\u00b7 Deployed ${BUILD_TIME}`;
+  })
+  .catch(() => {
+    if (buildTagEl) buildTagEl.textContent = `\u00b7 ${PARTY_FORMAT_BUILD}`;
+  });
 
 function setStatus(message, isError) {
   statusEl.textContent = message;
