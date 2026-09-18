@@ -1,6 +1,6 @@
 // Caches the whole app so it keeps working with no internet connection.
 // Bump CACHE when any file below changes, so phones pick up the new version.
-const CACHE = 'decree-v7';
+const CACHE = 'decree-v8';
 
 const ASSETS = [
   '.',
@@ -10,8 +10,6 @@ const ASSETS = [
   'icon.svg',
   'icon-maskable.svg',
   'js/jszip.min.js',
-  'js/mammoth.browser.min.js',
-  'js/word-to-pdf.js',
   'js/base-parts.js',
   'js/notice-template.js',
   'js/ooxml.js',

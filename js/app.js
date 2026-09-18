@@ -3,7 +3,6 @@ import * as os from './os.js';
 import { headerXml, PARTY_FORMAT_BUILD, smartFormatParty } from './common.js';
 import { packDocx, safeFileName } from './docx.js';
 import { setupNotice, refreshNotice, buildNotice, batchSize, resetNotice } from './notice-ui.js';
-import { setupWordToPdf, setLastGenerated } from './word-to-pdf.js';
 
 const $ = (id) => document.getElementById(id);
 const form = $('decree-form');
@@ -50,7 +49,6 @@ function selectCase(caseType) {
   document.querySelectorAll('.panel').forEach((panel) => {
     panel.classList.toggle('is-hidden', panel.dataset.panel !== caseType);
   });
-  $('generate').classList.toggle('is-hidden', caseType === 'pdf');
   refresh();
 }
 
@@ -292,39 +290,34 @@ function collect() {
 
 let lastUrl = null;
 
-/** `folder` becomes a download subfolder under the browser's Downloads directory (Chrome/Android; Safari ignores it). */
-function offerDownload(blob, filename, folder) {
+function offerDownload(blob, filename) {
   if (lastUrl) URL.revokeObjectURL(lastUrl);
   lastUrl = URL.createObjectURL(blob);
-  const downloadPath = folder ? `${folder}/${filename}` : filename;
 
   // The link stays on the page: some mobile browsers ignore a synthetic click.
   resultLink.href = lastUrl;
-  resultLink.download = downloadPath;
+  resultLink.download = filename;
   resultLink.textContent = `Tap to save ${filename}`;
   resultEl.classList.remove('is-hidden');
 
   const auto = document.createElement('a');
   auto.href = lastUrl;
-  auto.download = downloadPath;
+  auto.download = filename;
   document.body.appendChild(auto);
   auto.click();
   auto.remove();
-
-  setLastGenerated(blob, filename);
 }
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   const caseType = val('caseType');
-  if (caseType === 'pdf') return;
   const button = $('generate');
   button.disabled = true;
   setStatus('Generating\u2026');
   try {
     if (caseType === 'notice') {
       const { blob, filename, fit } = await buildNotice();
-      offerDownload(blob, filename, 'Notice');
+      offerDownload(blob, filename);
       const queued = batchSize();
       setStatus(
         `Ready \u2014 ${queued || 1} case(s), ${fit.pages} page(s), font ${Math.round(fit.scale * 100)}%` +
@@ -352,7 +345,7 @@ form.addEventListener('submit', async (event) => {
       headerXml: headerXml(title),
     });
 
-    offerDownload(blob, `${safeFileName(title)}.docx`, payload.caseType.toUpperCase());
+    offerDownload(blob, `${safeFileName(title)}.docx`);
     setStatus(`Ready \u2014 ${(blob.size / 1024).toFixed(0)} KB`);
   } catch (err) {
     setStatus(err.message, true);
@@ -363,7 +356,6 @@ form.addEventListener('submit', async (event) => {
 });
 
 setupNotice(refresh);
-setupWordToPdf();
 refresh();
 
 if ('serviceWorker' in navigator) {
