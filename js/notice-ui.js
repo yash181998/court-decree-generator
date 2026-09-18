@@ -62,9 +62,14 @@ function tidyField(el) {
   }
 }
 
-function attachAddressFormatting(el) {
-  el.addEventListener('paste', () => setTimeout(() => tidyField(el), 0));
-  el.addEventListener('blur', () => tidyField(el));
+/**
+ * Shows exactly what formatAddress will print, without touching what the user
+ * typed — rewriting the field on every paste/blur silently discarded manual
+ * line breaks and made typing on mobile feel broken.
+ */
+function updateAddressPreview(el, previewEl) {
+  if (!previewEl) return;
+  previewEl.textContent = formatAddress(el.value);
 }
 
 function addParty(values = {}) {
@@ -78,7 +83,6 @@ function addParty(values = {}) {
   const syncAddr = () => addrWrap.classList.toggle('is-hidden', same.checked);
   same.addEventListener('change', () => { syncAddr(); onChange(); });
   syncAddr();
-  attachAddressFormatting(node.querySelector('.p-address'));
 
   node.querySelector('.remove').addEventListener('click', () => {
     node.remove();
@@ -175,6 +179,11 @@ export function refreshNotice() {
 
   refreshPartyLabels();
 
+  updateAddressPreview($('n-commonAddress'), $('n-commonAddress-preview'));
+  $('n-parties').querySelectorAll('fieldset.party').forEach((el) => {
+    updateAddressPreview(el.querySelector('.p-address'), el.querySelector('.p-address-preview'));
+  });
+
   try {
     const data = previewFit(collectNotice());
     const pct = Math.round(data.scale * 100);
@@ -200,9 +209,7 @@ export function buildNotice() {
   return generateDocx(batch.length ? { cases: batch } : collectNotice());
 }
 
-export function setupNotice(handleChange) {
-  onChange = handleChange;
-
+function applyDateDefaults() {
   $('n-courtLine').value = DEFAULT_COURT_LINE;
   const today = new Date();
   $('n-givenPicker').value = [
@@ -210,8 +217,21 @@ export function setupNotice(handleChange) {
     String(today.getMonth() + 1).padStart(2, '0'),
     String(today.getDate()).padStart(2, '0'),
   ].join('-');
+}
 
-  attachAddressFormatting($('n-commonAddress'));
+/** Wipes case-specific data (parties, batch) back to a single blank defendant. */
+export function resetNotice() {
+  applyDateDefaults();
+  batch = [];
+  renderBatch();
+  $('n-parties').innerHTML = '';
+  addParty();
+}
+
+export function setupNotice(handleChange) {
+  onChange = handleChange;
+
+  applyDateDefaults();
   addParty();
 
   $('n-addParty').addEventListener('click', () => { addParty(); onChange(); });

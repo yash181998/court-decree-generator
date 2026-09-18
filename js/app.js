@@ -2,7 +2,8 @@ import * as mc from './mc.js';
 import * as os from './os.js';
 import { headerXml, PARTY_FORMAT_BUILD, smartFormatParty } from './common.js';
 import { packDocx, safeFileName } from './docx.js';
-import { setupNotice, refreshNotice, buildNotice, batchSize } from './notice-ui.js';
+import { setupNotice, refreshNotice, buildNotice, batchSize, resetNotice } from './notice-ui.js';
+import { setupWordToPdf, setLastGenerated } from './word-to-pdf.js';
 
 const $ = (id) => document.getElementById(id);
 const form = $('decree-form');
@@ -49,6 +50,7 @@ function selectCase(caseType) {
   document.querySelectorAll('.panel').forEach((panel) => {
     panel.classList.toggle('is-hidden', panel.dataset.panel !== caseType);
   });
+  $('generate').classList.toggle('is-hidden', caseType === 'pdf');
   refresh();
 }
 
@@ -206,6 +208,40 @@ function findDuplicateBlock(lines) {
 form.addEventListener('input', refresh);
 form.addEventListener('change', refresh);
 
+/* ---------------------------- clear data ------------------------------ */
+
+/** Extra advocate rows are added dynamically and aren't reset by clearing input values. */
+function removeExtraAdvocateRows() {
+  ['plaintiff', 'defendant'].forEach((role) => {
+    const container = $(`os-${role}Advocates`);
+    if (!container) return;
+    Array.from(container.querySelectorAll('.advocate-row')).slice(1).forEach((row) => row.remove());
+  });
+}
+
+$('clear-data').addEventListener('click', () => {
+  const caseType = val('caseType');
+  const panel = document.querySelector(`.panel[data-panel="${caseType}"]`);
+  if (panel) {
+    panel.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach((el) => {
+      el.value = el.defaultValue;
+    });
+    panel.querySelectorAll('select').forEach((el) => {
+      const def = Array.from(el.options).find((opt) => opt.defaultSelected);
+      el.value = def ? def.value : (el.options[0] ? el.options[0].value : '');
+    });
+    panel.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach((el) => {
+      el.checked = el.defaultChecked;
+    });
+  }
+  if (caseType === 'os') removeExtraAdvocateRows();
+  if (caseType === 'notice') resetNotice();
+
+  resultEl.classList.add('is-hidden');
+  setStatus('');
+  refresh();
+});
+
 /* ------------------------------ collect ------------------------------- */
 
 function collect() {
@@ -256,35 +292,39 @@ function collect() {
 
 let lastUrl = null;
 
-function offerDownload(blob, filename) {
+/** `folder` becomes a download subfolder under the browser's Downloads directory (Chrome/Android; Safari ignores it). */
+function offerDownload(blob, filename, folder) {
   if (lastUrl) URL.revokeObjectURL(lastUrl);
   lastUrl = URL.createObjectURL(blob);
+  const downloadPath = folder ? `${folder}/${filename}` : filename;
 
   // The link stays on the page: some mobile browsers ignore a synthetic click.
   resultLink.href = lastUrl;
-  resultLink.download = filename;
+  resultLink.download = downloadPath;
   resultLink.textContent = `Tap to save ${filename}`;
   resultEl.classList.remove('is-hidden');
 
   const auto = document.createElement('a');
   auto.href = lastUrl;
-  auto.download = filename;
+  auto.download = downloadPath;
   document.body.appendChild(auto);
   auto.click();
   auto.remove();
+
+  setLastGenerated(blob, filename);
 }
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
+  const caseType = val('caseType');
+  if (caseType === 'pdf') return;
   const button = $('generate');
   button.disabled = true;
   setStatus('Generating\u2026');
   try {
-    const caseType = val('caseType');
-
     if (caseType === 'notice') {
       const { blob, filename, fit } = await buildNotice();
-      offerDownload(blob, filename);
+      offerDownload(blob, filename, 'Notice');
       const queued = batchSize();
       setStatus(
         `Ready \u2014 ${queued || 1} case(s), ${fit.pages} page(s), font ${Math.round(fit.scale * 100)}%` +
@@ -312,7 +352,7 @@ form.addEventListener('submit', async (event) => {
       headerXml: headerXml(title),
     });
 
-    offerDownload(blob, `${safeFileName(title)}.docx`);
+    offerDownload(blob, `${safeFileName(title)}.docx`, payload.caseType.toUpperCase());
     setStatus(`Ready \u2014 ${(blob.size / 1024).toFixed(0)} KB`);
   } catch (err) {
     setStatus(err.message, true);
@@ -323,6 +363,7 @@ form.addEventListener('submit', async (event) => {
 });
 
 setupNotice(refresh);
+setupWordToPdf();
 refresh();
 
 if ('serviceWorker' in navigator) {

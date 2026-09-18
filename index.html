@@ -26,6 +26,7 @@
     <button type="button" class="tab is-active" data-case="mc">M.C.</button>
     <button type="button" class="tab" data-case="os">O.S.</button>
     <button type="button" class="tab" data-case="notice">Notice</button>
+    <button type="button" class="tab" data-case="pdf">Word&rarr;PDF</button>
   </nav>
 
   <form id="decree-form" autocomplete="off" novalidate>
@@ -290,6 +291,7 @@
         <label>Common address
           <textarea id="n-commonAddress" rows="6" placeholder="Start with the name, then the rest &mdash; paste in any shape and it is split into notice lines automatically."></textarea>
         </label>
+        <p class="format-preview" id="n-commonAddress-preview"></p>
         <button type="button" id="n-tidyAddress" class="secondary">Tidy formatting</button>
         <small>The name goes at the top. Tick &ldquo;same address&rdquo; on a defendant to reuse it, so only the number changes.</small>
       </fieldset>
@@ -313,8 +315,29 @@
       <p class="preview" id="n-fit"></p>
     </section>
 
+    <!-- ---------------------------------------------------------------- -->
+    <section class="panel is-hidden" data-panel="pdf">
+      <fieldset>
+        <legend>Convert Word to PDF</legend>
+        <p class="preview">Runs on this device using an approximate renderer &mdash; fonts, spacing and
+          page breaks may differ slightly from Word. For an exact match, open the .docx in Word or
+          LibreOffice and use &ldquo;Save as PDF&rdquo; there instead.</p>
+
+        <label>Choose a .docx file
+          <input type="file" id="pdf-file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+        </label>
+        <button type="button" id="pdf-use-last" class="secondary" disabled>Use the last generated document</button>
+
+        <div class="row">
+          <button type="button" id="pdf-convert" class="secondary">Convert &amp; Print / Save as PDF</button>
+        </div>
+        <p class="preview" id="pdf-status"></p>
+      </fieldset>
+    </section>
+
     <div class="actions">
       <button type="submit" id="generate">Generate DOCX</button>
+      <button type="button" id="clear-data" class="secondary">Clear data</button>
       <span id="status" role="status"></span>
     </div>
 
@@ -337,6 +360,7 @@
     <label class="p-address-wrap">Address
       <textarea class="p-address" rows="5"></textarea>
     </label>
+    <p class="format-preview p-address-preview"></p>
     <p class="preview p-preview"></p>
     <div class="row">
       <button type="button" class="secondary duplicate">Another number, same details</button>
@@ -346,6 +370,7 @@
 </template>
 
 <script src="js/jszip.min.js"></script>
+<script src="js/mammoth.browser.min.js"></script>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>
